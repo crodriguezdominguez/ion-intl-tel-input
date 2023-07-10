@@ -1,79 +1,48 @@
 import { Directive } from '@angular/core';
 import {
-  ValidatorFn,
   NG_VALIDATORS,
   Validator,
   AbstractControl,
-  FormGroup,
   ValidationErrors,
 } from '@angular/forms';
 import { PhoneNumber, PhoneNumberUtil } from 'google-libphonenumber';
-
-/* const validateInput: ValidatorFn = (
-  control: FormGroup
-): ValidationErrors | null => {
-  const error = { inValid: true };
-  const isRequired = control.errors && control.errors.required;
-  let phoneNumber: PhoneNumber;
-
-  try {
-    phoneNumber = PhoneNumberUtil.getInstance().parse(
-      control.value.number,
-      control.value.isoCode
-    );
-  } catch (e) {
-    if (!isRequired) {
-      return error;
-    }
-  }
-
-  if (control.value) {
-    if (!phoneNumber) {
-      return error;
-    } else {
-      if (
-        !PhoneNumberUtil.getInstance().isValidNumberForRegion(
-          phoneNumber,
-          control.value.isoCode
-        )
-      ) {
-        return error;
-      }
-    }
-  }
-  return;
-}; */
 
 export class IonIntlTelInputValidators {
   static phone(control: AbstractControl): ValidationErrors | null {
     const error = { phone: true };
     let phoneNumber: PhoneNumber;
 
-    if (!control.value) {
-      return error;
-    }
+    if (typeof control.value === 'string') {
+      try {
+        phoneNumber = PhoneNumberUtil.getInstance().parse(control.value, null);
+        if (PhoneNumberUtil.getInstance().isValidNumber(phoneNumber)) {
+          return null;
+        }
+      } catch (e) {
+        phoneNumber = null;
+      }
 
-    try {
-      phoneNumber = PhoneNumberUtil.getInstance().parse(
-        control.value.nationalNumber,
-        control.value.isoCode
-      );
-    } catch (e) {
-      return error;
-    }
-
-    if (!phoneNumber) {
-      return error;
-    } else {
-      if (
-        !PhoneNumberUtil.getInstance().isValidNumberForRegion(
-          phoneNumber,
-          control.value.isoCode
-        )
-      ) {
-        return error;
+      if (!phoneNumber) {
+        try {
+          // If failed to parse, try adding a +1 and see if valid
+          if (control.value.length >= 10 && control.value.indexOf('+') === -1) {
+            const v = '+1' + control.value;
+            phoneNumber = PhoneNumberUtil.getInstance().parse(v, null);
+            if (PhoneNumberUtil.getInstance().isValidNumber(phoneNumber)) {
+              return null;
+            }
+          }
+        } catch (e) {
+          return error;
+        }
       }
     }
+
+    if (!control.value) {
+      return null; // allow empty to be valid as the required validator can be added if needed
+    }
+
+    return error;
   }
 }
 

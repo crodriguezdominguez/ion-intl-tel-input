@@ -1,58 +1,28 @@
-<div class="ion-intl-tel-input-code">
-  <ionic-selectable
-    #codeSelect
-    [(ngModel)]="country"
-    [canSearch]="modalCanSearch"
-    closeButtonText="{{modalCloseText}}"
-    closeButtonSlot="{{modalCloseButtonSlot}}"
-    [disabled] = "disabled"
-    [hasVirtualScroll]="true"
-    itemTextField="name"
-    [items]="countries"
-    itemValueField="dialCode"
-    modalCssClass="ionic-tel-input-modal {{modalCssClass}}"
-    placeholder="Country"
-    searchFailText="{{modalSearchFailText}}"
-    searchPlaceholder="{{modalSearchPlaceholder}}"
-    [shouldBackdropClose]="modalShouldBackdropClose"
-    [shouldFocusSearchbar]="modalShouldFocusSearchbar"
-    (onChange)="onCodeChange($event)"
-    (onClose)="onCodeClose()"
-    (onOpen)="onCodeOpen()"
-    (onSearch)="onCodeSearchCountries($event)"
-    (onSelect)="onCodeSelect()"
-  >
-    <ng-template ionicSelectableTitleTemplate>
-      {{modalTitle}}
-    </ng-template>
-    <ng-template ionicSelectableValueTemplate let-country="value">
-      <span class="fi fi-{{country.flagClass}}"></span>
-      <span *ngIf="separateDialCode">{{dialCodePrefix}}{{country.dialCode}}</span>
-    </ng-template>
-    <ng-template ionicSelectableItemTemplate let-country="item">
-        <span class="ion-margin-end">{{country.name}}</span>
-        <span *ngIf="separateDialCode">{{dialCodePrefix}}{{country.dialCode}}</span>
-    </ng-template>
-    <ng-template ionicSelectableItemEndTemplate let-country="item">
-      <span class="fi fi-{{country.flagClass}}"></span>
-    </ng-template>
-  </ionic-selectable>
-</div>
-
+<ion-button
+        fill="clear"
+        class="ion-intl-tel-input-btn"
+        [disabled] = "disabled"
+        aria-label="country"
+        (click)="openModal()"
+>
+  <span class="ion-intl-tel-input-flag fi fi-{{country.flagClass}}"></span><span class="ion-intl-tel-input-code" *ngIf="separateDialCode">{{dialCodePrefix}}{{country.dialCode}}</span>
+  <ion-icon style="font-size:14px;opacity:.5;" name="caret-down"></ion-icon>
+</ion-button>
 <div class="ion-intl-tel-input-number">
   <ion-input
-    #numberInput
-    [(ngModel)]="phoneNumber"
-    autocomplete="off"
-    [disabled] = "disabled"
-    [attr.maxLength]="maxLength"
-    type="tel"
-    (ionBlur)="onIonNumberBlur()"
-    (ionChange)="onIonNumberChange($event)"
-    (ionFocus)="onIonNumberFocus()"
-    (ionInput)="onIonNumberInput($event)"
-    (keydown)="onNumberKeyDown($event)"
-    (ngModelChange)="onNumberChange()"
-    placeholder="{{country | countryPlaceholder: inputPlaceholder:separateDialCode:fallbackPlaceholder}}" >
+          #numberInput
+          [(ngModel)]="phoneNumber"
+          [autocomplete]="autocomplete"
+          [required]="required"
+          [disabled] = "disabled"
+          [attr.maxLength]="maxLength"
+          type="tel"
+          (ionBlur)="onIonNumberBlur()"
+          (ionChange)="onIonNumberChange($event)"
+          (ionFocus)="onIonNumberFocus()"
+          (ionInput)="onIonNumberInput($event)"
+          (keydown)="onNumberKeyDown($event)"
+          (ngModelChange)="onNumberChange()"
+          placeholder="{{country | countryPlaceholder: inputPlaceholder:separateDialCode:fallbackPlaceholder:usePatternPlaceholder}}" >
   </ion-input>
 </div>

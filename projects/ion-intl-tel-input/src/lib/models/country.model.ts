@@ -6,4 +6,5 @@ export interface CountryI {
     priority: number;
     placeholder: string;
     areaCodes?: Array<string>;
+    displayDialCode: string;
 }

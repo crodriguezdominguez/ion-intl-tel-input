@@ -1,42 +1,20 @@
 :host {
     width: 100%;
     display: flex;
-    align-items: flex-end;
+    align-items:center;
 
-    .ion-intl-tel-input-code{
-        position: relative;
+    ion-button {
+        color: var(--ion-color);
+        height: 100%;
+        margin: 0;
     }
-
-    .ion-intl-tel-input-number {
-        flex: 1;
+    ion-button::part(native) {
+        padding-inline-start: 0;
+        padding-inline-end: 2px;
+        margin: 0;
+        font-size: 16px;
+        font-weight: normal;
     }
-
-    .ionic-selectable {
-        &-label-default,
-        &-label-fixed {
-            max-width: 100%;
-        }
-
-        /* Keep an eye out for depreciated ::ng-deep replacement*/
-        &:not(&-label-stacked):not(&-label-floating) {
-            ::ng-deep {
-                .ionic-selectable-inner {
-                    .ionic-selectable-value {
-                        padding-top: 10px;
-                        padding-bottom: 10px;
-                    }
-                }
-
-                .ionic-selectable-icon {
-                    &-inner {
-                        top: 17px;
-                    }
-                }
-            }
-
-        }
-    }
-
     .fi {
         margin-right: 5px;
     }

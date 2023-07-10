@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">
+      {{title}}
+    </ion-title>
+
+    <ion-buttons [slot]="closeButtonSlot">
+      <ion-button ion-button (click)="closeModal()">{{closeButtonText}}</ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+  <ion-searchbar #searchBar *ngIf="canSearch" placeholder="{{searchPlaceholder}}" [debounce]="400"
+                 (keyup.enter)="$event.target.blur()" (ionChange)="search($event)"></ion-searchbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-radio-group [value]="country.isoCode">
+      <ion-item style="white-space:normal" *ngFor="let c of countries">
+        <ion-radio [value]="c.isoCode" slot="start" color="primary" (click)="itemTapped(c)"></ion-radio>
+        <ion-label>{{c.name}} <span *ngIf="dialCode">{{dialCode}}{{c.displayDialCode}}</span></ion-label>
+        <span slot="end" class="fi fi-{{c.flagClass}}"></span>
+      </ion-item>
+    </ion-radio-group>
+    <ion-item lines="none" *ngIf="notFound">
+      <ion-text>{{searchFailText}}</ion-text>
+    </ion-item>
+  </ion-list>
+</ion-content>
