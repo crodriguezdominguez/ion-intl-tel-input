@@ -1,4 +1,4 @@
-import { CountryI } from './../models/country.model';
+import { CountryI } from '../models/country.model';
 
 export const countries: CountryI[] = [
     {
