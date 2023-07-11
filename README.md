@@ -308,6 +308,17 @@ We use [SemVer](http://semver.org/) for versioning.
 
 See also the list of [contributors](https://github.com/azzamasghar1/is-ion-intl-tel-input/contributors) who participated in this project.
 
+* **Steve Drew** - *Version 2*
+
+-Angular 14+
+-Removed requirement for ion-selectable, functionality is now builtin.
+-Breaking feature: input is a string, and returns a string (easier)
+
+* **Carlos Rodríguez** - *Version 2*
+
+-Angular 15+
+-Ionic 7
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
