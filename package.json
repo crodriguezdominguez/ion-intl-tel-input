@@ -1,5 +1,5 @@
 {
-  "version": "2.0.2",
+  "version": "2.0.5",
   "name": "ion-intl-tel-input",
   "title": "Ion Intl Tel Input",
   "description": "An Ionic component for International Phone Number Input, that allows all countries, validation with google phone lib, limited countries, preferred countries, virtual scrolling and much more.",
@@ -47,6 +47,7 @@
     "publish": "npm run package && cd dist/ion-intl-tel-input && npm publish"
   },
   "dependencies": {
+    "@angular/cdk": "^15.2.9",
     "@angular/common": "~15.2.9",
     "@angular/core": "~15.2.9",
     "@angular/forms": "~15.2.9",

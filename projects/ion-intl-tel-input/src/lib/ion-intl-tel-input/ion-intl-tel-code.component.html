@@ -5,7 +5,7 @@
     </ion-title>
 
     <ion-buttons [slot]="closeButtonSlot">
-      <ion-button ion-button (click)="closeModal()">{{closeButtonText}}</ion-button>
+      <ion-button (click)="closeModal()">{{closeButtonText}}</ion-button>
     </ion-buttons>
 
   </ion-toolbar>
@@ -14,17 +14,18 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-radio-group [value]="country.isoCode">
-      <ion-item style="white-space:normal" *ngFor="let c of countries">
-        <ion-radio labelPlacement="end" [value]="c.isoCode" slot="start" color="primary" (click)="itemTapped(c)">
-          {{c.name}} <span *ngIf="dialCode">{{dialCode}}{{c.displayDialCode}}</span>
-        </ion-radio>
-        <span slot="end" class="fi fi-{{c.flagClass}}"></span>
+  <cdk-virtual-scroll-viewport style="width: 100%; height: 100%;" itemSize="56" minBufferPx="900" maxBufferPx="1350">
+    <ion-list>
+      <ion-radio-group [value]="country.isoCode">
+        <ion-item style="white-space:normal" *cdkVirtualFor="let c of countries">
+          <ion-radio labelPlacement="end" [value]="c.isoCode" slot="start" color="primary" (click)="itemTapped(c)">
+            <span class="fi fi-{{c.flagClass}}"></span>&nbsp;&nbsp;{{c.name}} <span *ngIf="dialCode">{{dialCode}}{{c.displayDialCode}}</span>
+          </ion-radio>
+        </ion-item>
+      </ion-radio-group>
+      <ion-item lines="none" *ngIf="notFound">
+        <ion-text>{{searchFailText}}</ion-text>
       </ion-item>
-    </ion-radio-group>
-    <ion-item lines="none" *ngIf="notFound">
-      <ion-text>{{searchFailText}}</ion-text>
-    </ion-item>
-  </ion-list>
+    </ion-list>
+  </cdk-virtual-scroll-viewport>
 </ion-content>
