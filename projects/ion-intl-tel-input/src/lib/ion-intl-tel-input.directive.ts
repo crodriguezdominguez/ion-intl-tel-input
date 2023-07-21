@@ -5,7 +5,7 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
-import { PhoneNumber, PhoneNumberUtil } from 'google-libphonenumber';
+import {parsePhoneNumber, PhoneNumber} from 'libphonenumber-js';
 
 export class IonIntlTelInputValidators {
   static phone(control: AbstractControl): ValidationErrors | null {
@@ -14,8 +14,8 @@ export class IonIntlTelInputValidators {
 
     if (typeof control.value === 'string') {
       try {
-        phoneNumber = PhoneNumberUtil.getInstance().parse(control.value, null);
-        if (PhoneNumberUtil.getInstance().isValidNumber(phoneNumber)) {
+        phoneNumber = parsePhoneNumber(control.value);
+        if (phoneNumber.isValid()) {
           return null;
         }
       } catch (e) {
@@ -27,8 +27,8 @@ export class IonIntlTelInputValidators {
           // If failed to parse, try adding a +1 and see if valid
           if (control.value.length >= 10 && control.value.indexOf('+') === -1) {
             const v = '+1' + control.value;
-            phoneNumber = PhoneNumberUtil.getInstance().parse(v, null);
-            if (PhoneNumberUtil.getInstance().isValidNumber(phoneNumber)) {
+            phoneNumber = parsePhoneNumber(v);
+            if (phoneNumber.isValid()) {
               return null;
             }
           }

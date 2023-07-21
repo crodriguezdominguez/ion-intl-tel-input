@@ -15,16 +15,14 @@ import {
 import {
   NG_VALUE_ACCESSOR,
   ControlValueAccessor,
-  NG_VALIDATORS,
 } from '@angular/forms';
 
 import { IonInput, ModalController, Platform } from '@ionic/angular';
 
 import {
-  PhoneNumber,
-  PhoneNumberFormat,
-  PhoneNumberUtil,
-} from 'google-libphonenumber';
+  parsePhoneNumber,
+  PhoneNumber
+} from 'libphonenumber-js';
 
 import { CountryI } from '../models/country.model';
 
@@ -386,7 +384,6 @@ export class IonIntlTelInputComponent
   phoneNumber = '';
   countries: CountryI[] = [];
   disabled = false;
-  phoneUtil: any = PhoneNumberUtil.getInstance();
 
   onTouched: () => void = () => { };
   propagateChange = (_: string | null) => { };
@@ -472,22 +469,22 @@ export class IonIntlTelInputComponent
     if (value && typeof value === 'string') {
       let googleNumber: PhoneNumber;
       try {
-        googleNumber = this.phoneUtil.parse(value, null);
+        googleNumber = parsePhoneNumber(value);
       } catch (e) {
       }
       if (!googleNumber) {
         // If failed to parse, try adding a +1 and see if valid
         if (value.length >= 10 && value.indexOf('+') === -1) {
           const v = '+1' + value;
-          googleNumber = this.phoneUtil.parse(v, null);
+          googleNumber = parsePhoneNumber(v);
         }
       }
       if (!googleNumber) {
         console.log('Warning: failed to parse number: ', value);
       }
       if (googleNumber) {
-        let isoCode = googleNumber && googleNumber.getCountryCode()
-            ? this.getCountryIsoCode(googleNumber.getCountryCode(), googleNumber)
+        let isoCode = googleNumber && googleNumber.country
+            ? googleNumber.country
             : this.country.isoCode;
         if (isoCode && isoCode !== this.country.isoCode) {
           const newCountry = this.countries.find(
@@ -499,7 +496,7 @@ export class IonIntlTelInputComponent
         }
         isoCode = isoCode ? isoCode : this.country ? this.country.isoCode : null;
 
-        const internationallNo = this.phoneUtil.format(googleNumber, PhoneNumberFormat.INTERNATIONAL);
+        const internationallNo = googleNumber.formatInternational();
         this.phoneNumber = this.removeDialCode(internationallNo);
         this.value = internationallNo;
       }
@@ -550,17 +547,14 @@ export class IonIntlTelInputComponent
     } else {
       let googleNumber: PhoneNumber;
       try {
-        googleNumber = this.phoneUtil.parse(
-            this.phoneNumber,
-            this.country.isoCode.toUpperCase()
-        );
+        googleNumber = parsePhoneNumber(this.phoneNumber, this.country.isoCode.toUpperCase() as any);
       } catch (e) { }
 
       const internationallNo = googleNumber
-          ? this.phoneUtil.format(googleNumber, PhoneNumberFormat.INTERNATIONAL)
+          ? googleNumber.formatInternational()
           : '';
       const nationalNo = googleNumber
-          ? this.phoneUtil.format(googleNumber, PhoneNumberFormat.NATIONAL)
+          ? googleNumber.formatNational()
           : '';
 
       if (this.separateDialCode && internationallNo) {
@@ -622,10 +616,7 @@ export class IonIntlTelInputComponent
     }
     let googleNumber: PhoneNumber;
     try {
-      googleNumber = this.phoneUtil.parse(
-          this.phoneNumber,
-          this.country.isoCode.toUpperCase()
-      );
+      googleNumber = parsePhoneNumber(this.phoneNumber, this.country.isoCode.toUpperCase() as any);
     } catch (e) {
       return;
     }
@@ -634,8 +625,8 @@ export class IonIntlTelInputComponent
     // auto select country based on the extension (and areaCode if needed) (e.g select Canada if number starts with +1 416)
     if (this.enableAutoCountrySelect) {
       isoCode =
-          googleNumber && googleNumber.getCountryCode()
-              ? this.getCountryIsoCode(googleNumber.getCountryCode(), googleNumber)
+          googleNumber && googleNumber.country
+              ? googleNumber.country
               : this.country.isoCode;
       if (isoCode && isoCode !== this.country.isoCode) {
         const newCountry = this.countries.find(
@@ -652,10 +643,10 @@ export class IonIntlTelInputComponent
       this.emitValueChange(null);
     } else {
       const internationallNo = googleNumber
-          ? this.phoneUtil.format(googleNumber, PhoneNumberFormat.INTERNATIONAL)
+          ? googleNumber.formatInternational()
           : '';
       const nationalNo = googleNumber
-          ? this.phoneUtil.format(googleNumber, PhoneNumberFormat.NATIONAL)
+          ? googleNumber.formatNational()
           : '';
 
       if (this.separateDialCode && internationallNo) {
