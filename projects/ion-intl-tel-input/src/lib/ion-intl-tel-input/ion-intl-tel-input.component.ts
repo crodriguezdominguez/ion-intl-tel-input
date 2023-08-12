@@ -151,6 +151,12 @@ export class IonIntlTelInputComponent
   @Input()
   inputPlaceholder = '';
 
+  @Input()
+  inputLabel = '';
+
+  @Input()
+  inputLabelPlacement = '';
+
   /**
    * Instead of an example phone number, use a x pattern. Such as xxx-xxx-xxxx, this will be obtained
    * based on the example number from the google phone lib.
