@@ -1,5 +1,5 @@
 {
-  "version": "2.1.2",
+  "version": "2.2.2",
   "name": "@crodriguezdominguez/ion-intl-tel-input",
   "title": "Ion Intl Tel Input",
   "private": false,
@@ -32,9 +32,7 @@
     "elktech"
   ],
   "peerDependencies": {
-    "libphonenumber-js": "^1.10.37",
-    "flag-icons": "^6.7.0"
-  },
-  "devDependencies": {
+    "flag-icons": "^6.14.0",
+    "libphonenumber-js": "^1.10.49"
   }
 }
