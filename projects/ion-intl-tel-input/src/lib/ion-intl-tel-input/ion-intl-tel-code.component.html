@@ -9,8 +9,12 @@
     </ion-buttons>
 
   </ion-toolbar>
-  <ion-searchbar #searchBar *ngIf="canSearch" placeholder="{{searchPlaceholder}}" [debounce]="400"
-                 (keyup.enter)="$event.target.blur()" (ionChange)="search($event)"></ion-searchbar>
+  <ion-searchbar #searchBar *ngIf="canSearch"
+                 placeholder="{{searchPlaceholder}}"
+                 [debounce]="400"
+                 (ionInput)="search($event); $event.target.blur()"
+                 (keyup.enter)="$event.target.blur()"
+                 (ionChange)="search($event)"></ion-searchbar>
 </ion-header>
 
 <ion-content>

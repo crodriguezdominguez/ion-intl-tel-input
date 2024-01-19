@@ -155,7 +155,10 @@ export class IonIntlTelInputComponent
   inputLabel = '';
 
   @Input()
-  inputLabelPlacement = '';
+  inputLabelColor = undefined;
+
+  @Input()
+  inputLabelPlacement = 'start';
 
   /**
    * Instead of an example phone number, use a x pattern. Such as xxx-xxx-xxxx, this will be obtained

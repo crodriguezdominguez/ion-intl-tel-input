@@ -1,5 +1,5 @@
 {
-  "version": "2.3.0",
+  "version": "2.4.3",
   "name": "ion-intl-tel-input",
   "title": "Ion Intl Tel Input",
   "description": "An Ionic component for International Phone Number Input, that allows all countries, validation with libphonenumber-js, limited countries, preferred countries, virtual scrolling and much more.",
@@ -54,7 +54,7 @@
     "@angular/platform-browser": "~16.2.9",
     "@angular/platform-browser-dynamic": "~16.2.9",
     "@angular/router": "~16.2.9",
-    "@ionic/angular": "^7.5.0",
+    "@ionic/angular": "^7.6.0",
     "core-js": "^2.6.12",
     "libphonenumber-js": "^1.10.49",
     "rxjs": "~7.5.0",
