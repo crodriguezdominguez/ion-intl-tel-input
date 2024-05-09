@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { CountryPlaceholder } from './pipes/country-placeholder';
 import { IonIntlTelInputValidatorDirective } from './ion-intl-tel-input.directive';
@@ -21,7 +20,6 @@ import { IonIntTelCodeComponent } from './ion-intl-tel-input/ion-intl-tel-code.c
     CommonModule,
     FormsModule,
     IonicModule,
-    ScrollingModule
   ],
   exports: [
     IonIntlTelInputComponent,

@@ -47,16 +47,15 @@
     "publish": "npm run package && cd dist/ion-intl-tel-input && npm publish"
   },
   "dependencies": {
-    "@angular/cdk": "^16.2.8",
     "@angular/common": "~16.2.9",
     "@angular/core": "~16.2.9",
     "@angular/forms": "~16.2.9",
     "@angular/platform-browser": "~16.2.9",
     "@angular/platform-browser-dynamic": "~16.2.9",
     "@angular/router": "~16.2.9",
-    "@ionic/angular": "^7.6.0",
+    "@ionic/angular": "^8.1.1",
     "core-js": "^2.6.12",
-    "libphonenumber-js": "^1.10.49",
+    "libphonenumber-js": "^1.10.64",
     "rxjs": "~7.5.0",
     "tslib": "^2.6.2",
     "zone.js": "^0.13.3"
