@@ -1,5 +1,5 @@
 {
-  "version": "2.4.3",
+  "version": "3.0.0",
   "name": "@crodriguezdominguez/ion-intl-tel-input",
   "title": "Ion Intl Tel Input",
   "private": false,
@@ -33,6 +33,6 @@
   ],
   "peerDependencies": {
     "flag-icons": "^7.0.0",
-    "libphonenumber-js": "^1.10.49"
+    "libphonenumber-js": "^1.11.15"
   }
 }

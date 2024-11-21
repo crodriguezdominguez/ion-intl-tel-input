@@ -49,6 +49,7 @@ export class IonIntlTelInputValidators {
 @Directive({
   // tslint:disable-next-line: directive-selector
   selector: '[ionIntlTelInputValid]',
+  standalone: true,
   providers: [
     {
       provide: NG_VALIDATORS,

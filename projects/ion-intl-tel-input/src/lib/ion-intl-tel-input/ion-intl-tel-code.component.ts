@@ -1,13 +1,44 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { IonSearchbar, ModalController } from '@ionic/angular';
 import { CountryI } from '../models/country.model';
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader, IonItem,
+  IonList, IonRadio,
+  IonRadioGroup,
+  IonSearchbar, IonText,
+  IonTitle,
+  IonToolbar,
+  ModalController
+} from '@ionic/angular/standalone';
+import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
+import {NgIf} from '@angular/common';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'ion-intl-tel-code',
-  templateUrl: './ion-intl-tel-code.component.html'
+  templateUrl: './ion-intl-tel-code.component.html',
+  standalone: true,
+  imports: [
+    IonToolbar,
+    IonTitle,
+    IonHeader,
+    IonButtons,
+    IonButton,
+    IonSearchbar,
+    IonContent,
+    CdkVirtualScrollViewport,
+    IonList,
+    IonRadioGroup,
+    IonItem,
+    CdkFixedSizeVirtualScroll,
+    IonRadio,
+    IonText,
+    CdkVirtualForOf,
+    NgIf
+  ]
 })
-
 export class IonIntTelCodeComponent implements OnInit {
 
   @Input() country: CountryI;
@@ -59,12 +90,12 @@ export class IonIntTelCodeComponent implements OnInit {
     }
   }
 
-  itemTapped(c) {
-    this.modalCtrl.dismiss(c);
+  async itemTapped(c) {
+    await this.modalCtrl.dismiss(c);
   }
 
-  closeModal() {
-    this.modalCtrl.dismiss(null);
+  async closeModal() {
+    await this.modalCtrl.dismiss(null);
   }
 
 }

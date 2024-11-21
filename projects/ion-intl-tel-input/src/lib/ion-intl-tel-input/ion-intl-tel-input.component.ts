@@ -12,12 +12,13 @@ import {
   HostBinding,
 } from '@angular/core';
 
+import { addIcons } from 'ionicons';
+import {caretDown} from 'ionicons/icons';
+
 import {
   NG_VALUE_ACCESSOR,
-  ControlValueAccessor,
+  ControlValueAccessor, FormsModule,
 } from '@angular/forms';
-
-import { IonInput, ModalController, Platform } from '@ionic/angular';
 
 import {
   parsePhoneNumber,
@@ -29,6 +30,9 @@ import { CountryI } from '../models/country.model';
 import { IonIntlTelInputService } from '../ion-intl-tel-input.service';
 import { raf } from '../util/util';
 import { IonIntTelCodeComponent } from './ion-intl-tel-code.component';
+import {IonButton, IonIcon, IonInput, IonText, ModalController, Platform} from '@ionic/angular/standalone';
+import {NgIf} from '@angular/common';
+import {CountryPlaceholder} from '../pipes/country-placeholder';
 
 /**
  * @ignore
@@ -38,6 +42,7 @@ import { IonIntTelCodeComponent } from './ion-intl-tel-code.component';
   selector: 'ion-intl-tel-input',
   templateUrl: './ion-intl-tel-input.component.html',
   styleUrls: ['./ion-intl-tel-input.component.scss'],
+  standalone: true,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -45,6 +50,15 @@ import { IonIntTelCodeComponent } from './ion-intl-tel-code.component';
       multi: true,
     },
   ],
+  imports: [
+    IonInput,
+    FormsModule,
+    IonText,
+    IonButton,
+    IonIcon,
+    NgIf,
+    CountryPlaceholder
+  ]
 })
 
 /**
@@ -402,7 +416,9 @@ export class IonIntlTelInputComponent
       private platform: Platform,
       private ionIntlTelInputService: IonIntlTelInputService,
       private modalCtrl: ModalController
-  ) { }
+  ) {
+    addIcons({caretDown});
+  }
 
   get value(): string | null {
     return this._value;

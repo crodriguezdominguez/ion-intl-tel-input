@@ -3,7 +3,7 @@ import { CountryI } from '../models/country.model';
 import {getExampleNumber} from 'libphonenumber-js';
 import examples from 'libphonenumber-js/mobile/examples';
 
-@Pipe({ name: 'countryPlaceholder' })
+@Pipe({ standalone: true, name: 'countryPlaceholder' })
 export class CountryPlaceholder implements PipeTransform {
   transform(country: CountryI, inputPlaceholder: string,
             separateDialCode: boolean, fallbackPlaceholder: string,
