@@ -9,12 +9,14 @@
     </ion-buttons>
 
   </ion-toolbar>
-  <ion-searchbar #searchBar *ngIf="canSearch"
-                 placeholder="{{searchPlaceholder}}"
-                 [debounce]="400"
-                 (ionInput)="search($event); $event.target.blur()"
-                 (keyup.enter)="$event.target.blur()"
-                 (ionChange)="search($event)"></ion-searchbar>
+  @if (canSearch) {
+    <ion-searchbar #searchBar
+      placeholder="{{searchPlaceholder}}"
+      [debounce]="400"
+      (ionInput)="search($event); $event.target.blur()"
+      (keyup.enter)="$event.target.blur()"
+    (ionChange)="search($event)"></ion-searchbar>
+  }
 </ion-header>
 
 <ion-content>
@@ -23,13 +25,17 @@
       <ion-radio-group [value]="country.isoCode">
         <ion-item style="white-space:normal" *cdkVirtualFor="let c of countries">
           <ion-radio labelPlacement="end" [value]="c.isoCode" slot="start" color="primary" (click)="itemTapped(c)">
-            <span class="fi fi-{{c.flagClass}}"></span>&nbsp;&nbsp;{{c.name}} <span *ngIf="dialCode">{{dialCode}}{{c.displayDialCode}}</span>
-          </ion-radio>
-        </ion-item>
-      </ion-radio-group>
-      <ion-item lines="none" *ngIf="notFound">
+            <span class="fi fi-{{c.flagClass}}"></span>&nbsp;&nbsp;{{c.name}} @if (dialCode) {
+            <span>{{dialCode}}{{c.displayDialCode}}</span>
+          }
+        </ion-radio>
+      </ion-item>
+    </ion-radio-group>
+    @if (notFound) {
+      <ion-item lines="none">
         <ion-text>{{searchFailText}}</ion-text>
       </ion-item>
-    </ion-list>
-  </cdk-virtual-scroll-viewport>
+    }
+  </ion-list>
+</cdk-virtual-scroll-viewport>
 </ion-content>

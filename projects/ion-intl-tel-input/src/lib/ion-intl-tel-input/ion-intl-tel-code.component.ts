@@ -13,7 +13,7 @@ import {
   ModalController
 } from '@ionic/angular/standalone';
 import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
-import {NgIf} from '@angular/common';
+
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -35,9 +35,8 @@ import {NgIf} from '@angular/common';
     CdkFixedSizeVirtualScroll,
     IonRadio,
     IonText,
-    CdkVirtualForOf,
-    NgIf
-  ]
+    CdkVirtualForOf
+]
 })
 export class IonIntTelCodeComponent implements OnInit {
 
