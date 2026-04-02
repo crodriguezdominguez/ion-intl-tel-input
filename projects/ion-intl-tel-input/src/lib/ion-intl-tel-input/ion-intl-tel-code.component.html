@@ -1,17 +1,17 @@
 <ion-header>
   <ion-toolbar>
     <ion-title class="ion-text-center">
-      {{title}}
+      {{title()}}
     </ion-title>
 
-    <ion-buttons [slot]="closeButtonSlot">
-      <ion-button (click)="closeModal()">{{closeButtonText}}</ion-button>
+    <ion-buttons [slot]="closeButtonSlot()">
+      <ion-button (click)="closeModal()">{{closeButtonText()}}</ion-button>
     </ion-buttons>
 
   </ion-toolbar>
-  @if (canSearch) {
+  @if (canSearch()) {
     <ion-searchbar #searchBar
-      placeholder="{{searchPlaceholder}}"
+      placeholder="{{searchPlaceholder()}}"
       [debounce]="400"
       (ionInput)="search($event); $event.target.blur()"
       (keyup.enter)="$event.target.blur()"
@@ -22,20 +22,20 @@
 <ion-content>
   <cdk-virtual-scroll-viewport style="width: 100%; height: 100%;" itemSize="56" minBufferPx="900" maxBufferPx="1350">
     <ion-list lines="full">
-      <ion-radio-group [value]="country.isoCode">
-        <ion-item style="white-space:normal" *cdkVirtualFor="let c of countries">
+      <ion-radio-group [value]="country().isoCode">
+        <ion-item style="white-space:normal" *cdkVirtualFor="let c of countries()">
           <ion-radio labelPlacement="end" [value]="c.isoCode" slot="start" color="primary" (click)="itemTapped(c)">
-            <span class="fi fi-{{c.flagClass}}"></span>&nbsp;&nbsp;{{c.name}} @if (dialCode) {
-            <span>{{dialCode}}{{c.displayDialCode}}</span>
+            <span class="fi fi-{{c.flagClass}}"></span>&nbsp;&nbsp;{{c.name}} @if (dialCode()) {
+            <span>{{dialCode()}}{{c.displayDialCode}}</span>
           }
         </ion-radio>
       </ion-item>
     </ion-radio-group>
-    @if (notFound) {
+    @if (notFound()) {
       <ion-item lines="none">
-        <ion-text>{{searchFailText}}</ion-text>
+        <ion-text>{{searchFailText()}}</ion-text>
       </ion-item>
     }
-  </ion-list>
-</cdk-virtual-scroll-viewport>
+    </ion-list>
+  </cdk-virtual-scroll-viewport>
 </ion-content>

@@ -1,10 +1,10 @@
 <ion-input
   #numberInput
   [(ngModel)]="phoneNumber"
-  [autocomplete]="autocomplete"
-  [required]="required"
+  [autocomplete]="autocomplete()"
+  [required]="required()"
   [disabled] = "disabled"
-  [attr.maxLength]="maxLength"
+  [attr.maxLength]="maxLength()"
   type="tel"
   (ionBlur)="onIonNumberBlur()"
   (ionChange)="onIonNumberChange($event)"
@@ -12,10 +12,10 @@
   (ionInput)="onIonNumberInput($event)"
   (keydown)="onNumberKeyDown($event)"
   (ngModelChange)="onNumberChange()"
-  [labelPlacement]="inputLabelPlacement"
-  placeholder="{{country | countryPlaceholder: inputPlaceholder:separateDialCode:fallbackPlaceholder:usePatternPlaceholder}}">
+  [labelPlacement]="inputLabelPlacement()"
+  placeholder="{{country | countryPlaceholder: inputPlaceholder():separateDialCode():fallbackPlaceholder():usePatternPlaceholder()}}">
   <div slot="label">
-    <ion-text [color]="inputLabelColor">{{inputLabel}}</ion-text>
+    <ion-text [color]="inputLabelColor()">{{inputLabel()}}</ion-text>
   </div>
   <ion-button
     slot="start"
@@ -24,8 +24,8 @@
     [disabled] = "disabled"
     aria-label="country"
     (click)="openModal()">
-    <span class="ion-intl-tel-input-flag fi fi-{{country.flagClass}}"></span>@if (separateDialCode) {
-    <span class="ion-intl-tel-input-code">{{dialCodePrefix}}{{country.dialCode}}</span>
+    <span class="ion-intl-tel-input-flag fi fi-{{country.flagClass}}"></span>@if (separateDialCode()) {
+    <span class="ion-intl-tel-input-code">{{dialCodePrefix()}}{{country.dialCode}}</span>
   }
   <ion-icon style="font-size:14px;opacity:.5;" name="caret-down"></ion-icon>
 </ion-button>

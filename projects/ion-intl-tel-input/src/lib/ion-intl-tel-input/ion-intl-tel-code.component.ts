@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, input, computed, inject, signal, viewChild} from '@angular/core';
 import { CountryI } from '../models/country.model';
 import {
   IonButton,
@@ -39,62 +39,60 @@ import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} fr
 ]
 })
 export class IonIntTelCodeComponent implements OnInit {
+  private readonly modalController = inject(ModalController);
 
-  @Input() country: CountryI;
-  @Input() canSearch: boolean;
-  @Input() closeButtonText = 'Close';
-  @Input() closeButtonSlot = 'end';
-  @Input() countries: CountryI[];
-  @Input() searchFailText: string;
-  @Input() searchPlaceholder: string;
-  @Input() shouldFocusSearchbar: boolean;
-  @Input() title: string;
-  @Input() dialCode: string;
+  readonly country = input<CountryI>(undefined);
+  readonly canSearch = input<boolean>(undefined);
+  readonly closeButtonText = input('Close');
+  readonly closeButtonSlot = input('end');
+  readonly countries = input<CountryI[]>(undefined);
+  readonly searchFailText = input<string>(undefined);
+  readonly searchPlaceholder = input<string>(undefined);
+  readonly shouldFocusSearchbar = input<boolean>(undefined);
+  readonly title = input<string>(undefined);
+  readonly dialCode = input<string>(undefined);
 
-  @ViewChild('searchBar') sbar: IonSearchbar;
+  protected readonly searchBar = viewChild<IonSearchbar>('searchBar');
+
+  protected readonly displayedCountries = computed(() => {
+    let search = this.searchText();
+    if (search === '' || search === null) {
+      return this.allCountries;
+    } else {
+      search = search.toLocaleLowerCase();
+      return this.allCountries.filter( r => {
+        return (r.name && r.name.toLocaleLowerCase().indexOf(search) !== -1);
+      });
+    }
+  });
+
+  protected readonly searchText = signal<string>(null);
+
+  protected readonly notFound = computed(() => {
+    return (this.displayedCountries().length === 0);
+  });
 
   private allCountries: CountryI[];
 
-  public notFound;
-
-  constructor(
-      private modalCtrl: ModalController
-  ) {
-
-  }
-
   ngOnInit(): void {
-    this.allCountries = this.countries;
+    this.allCountries = this.countries();
   }
 
   ionViewDidEnter() {
-    if (this.sbar && this.shouldFocusSearchbar) {
-      setTimeout( () => { this.sbar.setFocus(); }, 400);
+    if (this.searchBar() && this.shouldFocusSearchbar()) {
+      setTimeout( () => { this.searchBar().setFocus().then(); }, 400);
     }
   }
 
   search(ev) {
-    let search = ev.detail.value;
-    this.notFound = false;
-    if (search === '' || search === null) {
-      this.countries = this.allCountries;
-    } else {
-      search = search.toLocaleLowerCase();
-      this.countries = this.allCountries.filter( r => {
-        return (r.name && r.name.toLocaleLowerCase().indexOf(search) !== -1);
-      });
-      if (this.countries.length === 0) {
-        this.notFound = true;
-      }
-    }
+    this.searchText.set(ev.detail.value);
   }
 
   async itemTapped(c) {
-    await this.modalCtrl.dismiss(c);
+    await this.modalController.dismiss(c);
   }
 
   async closeModal() {
-    await this.modalCtrl.dismiss(null);
+    await this.modalController.dismiss(null);
   }
-
 }

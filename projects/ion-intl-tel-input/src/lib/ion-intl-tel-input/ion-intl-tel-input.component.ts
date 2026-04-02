@@ -1,15 +1,14 @@
 import {
   Component,
   OnInit,
-  Input,
   forwardRef,
   Output,
   EventEmitter,
   OnChanges,
   SimpleChanges,
-  ViewChild,
   ElementRef,
   HostBinding,
+  input, inject, viewChild
 } from '@angular/core';
 
 import { addIcons } from 'ionicons';
@@ -63,23 +62,23 @@ import {CountryPlaceholder} from '../pipes/country-placeholder';
 /**
  * @author Azzam Asghar <azzam.asghar@interstellus.com>
  * @author Steve Drew <sdrew@waitwell.ca>
+ * @author Carlos Rodríguez <carlosrodriguez@ugr.es>
  */
-export class IonIntlTelInputComponent
-    implements ControlValueAccessor, OnInit, OnChanges {
-  @HostBinding('class.ion-intl-tel-input')
-  cssClass = true;
-  @HostBinding('class.ion-intl-tel-input-ios')
-  isIos: boolean;
-  @HostBinding('class.ion-intl-tel-input-md')
-  isMD: boolean;
-  @HostBinding('class.has-focus')
-  hasFocus;
+export class IonIntlTelInputComponent implements ControlValueAccessor, OnInit, OnChanges {
+  private readonly el = inject(ElementRef);
+  private readonly platform = inject(Platform);
+  private readonly ionIntlTelInputService = inject(IonIntlTelInputService);
+  private readonly modalCtrl = inject(ModalController);
+
+  @HostBinding('class.ion-intl-tel-input') cssClass = true;
+  @HostBinding('class.ion-intl-tel-input-ios') isIos: boolean;
+  @HostBinding('class.ion-intl-tel-input-md') isMD: boolean;
+  @HostBinding('class.has-focus') hasFocus;
   @HostBinding('class.ion-intl-tel-input-has-value')
   get hasValueCssClass(): boolean {
     return this.hasValue();
   }
   @HostBinding('class.ion-intl-tel-input-is-enabled')
-  @Input('isEnabled')
   get isEnabled(): boolean {
     return !this.disabled;
   }
@@ -90,8 +89,7 @@ export class IonIntlTelInputComponent
    * @default 'off'
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  autocomplete: 'off'|'tel' = 'off';
+  readonly autocomplete = input<'off' | 'tel'>('off');
 
   /**
    * required, passed onto ion-input so we can be accessiblity compliant
@@ -99,8 +97,7 @@ export class IonIntlTelInputComponent
    * @default false
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  required = false;
+  readonly required = input(false);
 
   /**
    * Iso Code of default selected Country.
@@ -109,8 +106,7 @@ export class IonIntlTelInputComponent
    * @default ''
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  defaultCountryiso = '';
+  readonly defaultCountryiso = input('');
 
   /**
    * Determines whether to use `00` or `+` as dial code prefix.
@@ -120,8 +116,7 @@ export class IonIntlTelInputComponent
    * @default +
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  dialCodePrefix: '+' | '00' = '+';
+  readonly dialCodePrefix = input<'+' | '00'>('+');
 
   /**
    * Determines whether to select automatic country based on user input.
@@ -130,8 +125,7 @@ export class IonIntlTelInputComponent
    * @default true
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  enableAutoCountrySelect = true;
+  readonly enableAutoCountrySelect = input(true);
 
   /**
    * Determines whether an example number will be shown as a placeholder in input.
@@ -140,8 +134,7 @@ export class IonIntlTelInputComponent
    * @default true
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  enablePlaceholder = true;
+  readonly enablePlaceholder = input(true);
 
   /**
    * A fallaback placeholder to be used if no example number is found for a country.
@@ -150,8 +143,7 @@ export class IonIntlTelInputComponent
    * @default ''
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  fallbackPlaceholder = '';
+  readonly fallbackPlaceholder = input('');
 
   /**
    * If a custom placeholder is needed for input.
@@ -161,17 +153,13 @@ export class IonIntlTelInputComponent
    * @default ''
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  inputPlaceholder = '';
+  readonly inputPlaceholder = input('');
 
-  @Input()
-  inputLabel = '';
+  readonly inputLabel = input('');
 
-  @Input()
-  inputLabelColor = undefined;
+  readonly inputLabelColor = input(undefined);
 
-  @Input()
-  inputLabelPlacement: 'start' | 'end' | 'floating' | 'stacked' | 'fixed' = 'start';
+  readonly inputLabelPlacement = input<'start' | 'end' | 'floating' | 'stacked' | 'fixed'>('start');
 
   /**
    * Instead of an example phone number, use a x pattern. Such as xxx-xxx-xxxx, this will be obtained
@@ -180,8 +168,7 @@ export class IonIntlTelInputComponent
    * @default true
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  usePatternPlaceholder = true;
+  readonly usePatternPlaceholder = input(true);
 
   /**
    * Maximum Length for input.
@@ -190,8 +177,7 @@ export class IonIntlTelInputComponent
    * @default '15'
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  maxLength = '15';
+  readonly maxLength = input('15');
 
   /**
    * Title of modal opened to select country dial code.
@@ -200,8 +186,7 @@ export class IonIntlTelInputComponent
    * @default 'Select Country'
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  modalTitle = 'Select Country';
+  readonly modalTitle = input('Select Country');
 
   /**
    * CSS class to attach to dial code selectionmodal.
@@ -210,8 +195,7 @@ export class IonIntlTelInputComponent
    * @default 'ion-intl-tel-modal'
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  modalCssClass = 'ion-intl-tel-modal';
+  readonly modalCssClass = input('ion-intl-tel-modal');
 
   /**
    * Placeholder for input in dial code selection modal.
@@ -220,8 +204,7 @@ export class IonIntlTelInputComponent
    * @default 'Enter country name'
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  modalSearchPlaceholder = 'Enter country name';
+  readonly modalSearchPlaceholder = input('Enter country name');
 
   /**
    * Text for close button in dial code selection modal.
@@ -230,8 +213,7 @@ export class IonIntlTelInputComponent
    * @default 'Close'
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  modalCloseText = 'Close';
+  readonly modalCloseText = input('Close');
 
   /**
    * Slot for close button in dial code selection modal. [Ionic slots](https://ionicframework.com/docs/api/item) are supported
@@ -240,8 +222,7 @@ export class IonIntlTelInputComponent
    * @default 'end'
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  modalCloseButtonSlot: 'start' | 'end' | 'primary' | 'secondary' = 'end';
+  readonly modalCloseButtonSlot = input<'start' | 'end' | 'primary' | 'secondary'>('end');
 
   /**
    * Determines whether dial code selection modal should be searchable or not.
@@ -250,8 +231,7 @@ export class IonIntlTelInputComponent
    * @default 'true'
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  modalCanSearch = true;
+  readonly modalCanSearch = input(true);
 
   /**
    * Determines whether dial code selection modal is closed on backdrop click.
@@ -260,8 +240,7 @@ export class IonIntlTelInputComponent
    * @default 'true'
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  modalShouldBackdropClose = true;
+  readonly modalShouldBackdropClose = input(true);
 
   /**
    * Determines whether input should be focused when dial code selection modal is opened.
@@ -270,8 +249,7 @@ export class IonIntlTelInputComponent
    * @default 'true'
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  modalShouldFocusSearchbar = true;
+  readonly modalShouldFocusSearchbar = input(true);
 
   /**
    * Message to show when no countries are found for search in dial code selection modal.
@@ -280,8 +258,7 @@ export class IonIntlTelInputComponent
    * @default 'true'
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  modalSearchFailText = 'No countries found';
+  readonly modalSearchFailText = input('No countries found');
 
   /**
    * List of iso codes of manually selected countries as string, which will appear in the dropdown.
@@ -291,8 +268,7 @@ export class IonIntlTelInputComponent
    * @default null
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  onlyCountries: Array<string> = [];
+  readonly onlyCountries = input<Array<string>>([]);
 
   /**
    * List of iso codesn as string of  countries, which will appear at the top in dial code selection modal.
@@ -302,8 +278,7 @@ export class IonIntlTelInputComponent
    * @default null
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  preferredCountries: Array<string> = [];
+  readonly preferredCountries = input<Array<string>>([]);
 
   /**
    * Determines whether first country should be selected in dial code select or not.
@@ -312,8 +287,7 @@ export class IonIntlTelInputComponent
    * @default true
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  selectFirstCountry = true;
+  readonly selectFirstCountry = input(true);
 
   /**
    * Determines whether to visually separate dialcode into the drop down element.
@@ -322,8 +296,7 @@ export class IonIntlTelInputComponent
    * @default true
    * @memberof IonIntlTelInputComponent
    */
-  @Input()
-  separateDialCode = true;
+  readonly separateDialCode = input(true);
 
   /**
    * Fires when the Phone number Input is changed.
@@ -397,7 +370,7 @@ export class IonIntlTelInputComponent
   @Output()
   readonly codeSelect = new EventEmitter<any>();
 
-  @ViewChild('numberInput', { static: false }) numberInputEl: IonInput;
+  private readonly numberInputEl = viewChild<IonInput>('numberInput');
 
   // tslint:disable-next-line: variable-name
   private _value: string = null;
@@ -410,12 +383,7 @@ export class IonIntlTelInputComponent
   onTouched: () => void = () => { };
   propagateChange = (_: string | null) => { };
 
-  constructor(
-      private el: ElementRef,
-      private platform: Platform,
-      private ionIntlTelInputService: IonIntlTelInputService,
-      private modalCtrl: ModalController
-  ) {
+  constructor() {
     addIcons({caretDown});
   }
 
@@ -440,21 +408,23 @@ export class IonIntlTelInputComponent
     this.fetchAllCountries();
     this.setPreferredCountries();
 
-    if (this.onlyCountries.length) {
+    if (this.onlyCountries().length) {
       this.countries = this.countries.filter((country: CountryI) =>
-          this.onlyCountries.includes(country.isoCode)
+          this.onlyCountries().includes(country.isoCode)
       );
     }
 
-    if (this.selectFirstCountry) {
-      if (this.defaultCountryiso) {
-        this.setCountry(this.getCountryByIsoCode(this.defaultCountryiso));
+    if (this.selectFirstCountry()) {
+      const defaultCountryiso = this.defaultCountryiso();
+      if (defaultCountryiso) {
+        this.setCountry(this.getCountryByIsoCode(defaultCountryiso));
       } else {
+        const preferredCountries = this.preferredCountries();
         if (
-            this.preferredCountries.length &&
-            this.preferredCountries.includes(this.defaultCountryiso)
+            preferredCountries.length &&
+            preferredCountries.includes(defaultCountryiso)
         ) {
-          this.setCountry(this.getCountryByIsoCode(this.preferredCountries[0]));
+          this.setCountry(this.getCountryByIsoCode(preferredCountries[0]));
         } else {
           this.setCountry(this.countries[0]);
         }
@@ -532,27 +502,23 @@ export class IonIntlTelInputComponent
     return !this.isNullOrWhiteSpace(this.value);
   }
 
-  onCodeOpen() {
-    this.codeOpen.emit();
-  }
-
   async openModal() {
 
     const modal = await this.modalCtrl.create({
       component: IonIntTelCodeComponent,
-      cssClass: this.modalCssClass,
-      backdropDismiss: this.modalShouldBackdropClose,
+      cssClass: this.modalCssClass(),
+      backdropDismiss: this.modalShouldBackdropClose(),
       componentProps: {
         country: this.country,
-        canSearch: this.modalCanSearch,
-        closeButtonText: this.modalCloseText,
-        closeButtonSlot: this.modalCloseButtonSlot,
+        canSearch: this.modalCanSearch(),
+        closeButtonText: this.modalCloseText(),
+        closeButtonSlot: this.modalCloseButtonSlot(),
         countries: this.countries,
-        title: this.modalTitle,
-        searchFailText: this.modalSearchFailText,
-        searchPlaceholder: this.modalSearchPlaceholder,
-        shouldFocusSearchbar: this.modalShouldFocusSearchbar,
-        dialCode: this.separateDialCode ? this.dialCodePrefix : null
+        title: this.modalTitle(),
+        searchFailText: this.modalSearchFailText(),
+        searchPlaceholder: this.modalSearchPlaceholder(),
+        shouldFocusSearchbar: this.modalShouldFocusSearchbar(),
+        dialCode: this.separateDialCode() ? this.dialCodePrefix() : null
       }
     });
     await modal.present();
@@ -577,11 +543,8 @@ export class IonIntlTelInputComponent
       const internationallNo = googleNumber
           ? googleNumber.formatInternational()
           : '';
-      const nationalNo = googleNumber
-          ? googleNumber.formatNational()
-          : '';
 
-      if (this.separateDialCode && internationallNo) {
+      if (this.separateDialCode() && internationallNo) {
         this.phoneNumber = this.removeDialCode(internationallNo);
       }
       this.emitValueChange(internationallNo);
@@ -589,20 +552,8 @@ export class IonIntlTelInputComponent
       this.codeChange.emit();
     }
     setTimeout(() => {
-      this.numberInputEl.setFocus();
+      this.numberInputEl().setFocus().then();
     }, 400);
-  }
-
-  onCodeClose() {
-    this.onTouched();
-    this.setIonicClasses(this.el);
-    this.hasFocus = false;
-    this.setItemClass(this.el, 'item-has-focus', false);
-    this.codeClose.emit();
-  }
-
-  onCodeSelect() {
-    this.codeSelect.emit();
   }
 
   onIonNumberChange(event: Event) {
@@ -636,7 +587,7 @@ export class IonIntlTelInputComponent
       return;
     }
     if (this.country) {
-      this.emitValueChange(this.dialCodePrefix + this.country.dialCode + ' ' + this.phoneNumber);
+      this.emitValueChange(this.dialCodePrefix() + this.country.dialCode + ' ' + this.phoneNumber);
     }
     let googleNumber: PhoneNumber;
     try {
@@ -647,7 +598,7 @@ export class IonIntlTelInputComponent
 
     let isoCode = this.country ? this.country.isoCode : null;
     // auto select country based on the extension (and areaCode if needed) (e.g select Canada if number starts with +1 416)
-    if (this.enableAutoCountrySelect) {
+    if (this.enableAutoCountrySelect()) {
       isoCode =
           googleNumber && googleNumber.country
               ? googleNumber.country
@@ -673,7 +624,7 @@ export class IonIntlTelInputComponent
           ? googleNumber.formatNational()
           : '';
 
-      if (this.separateDialCode && internationallNo) {
+      if (this.separateDialCode() && internationallNo) {
         this.phoneNumber = this.removeDialCode(internationallNo);
       }
 
@@ -707,44 +658,6 @@ export class IonIntlTelInputComponent
     }
   }
 
-  private filterCountries(text: string): CountryI[] {
-    return this.countries.filter((country) => {
-      return (
-          country.name.toLowerCase().indexOf(text) !== -1 ||
-          country.name.toLowerCase().indexOf(text) !== -1 ||
-          country.dialCode.toString().toLowerCase().indexOf(text) !== -1
-      );
-    });
-  }
-
-  private getCountryIsoCode(
-      countryCode: number,
-      googleNumber: PhoneNumber
-  ): string | undefined {
-    const rawNumber = (googleNumber as any).values_[2].toString();
-
-    const countries = this.countries.filter(
-        (country: CountryI) => country.dialCode === countryCode.toString()
-    );
-    const mainCountry = countries.find(
-        (country: CountryI) => country.areaCodes === undefined
-    );
-    const secondaryCountries = countries.filter(
-        (country: CountryI) => country.areaCodes !== undefined
-    );
-
-    let matchedCountry = mainCountry ? mainCountry.isoCode : undefined;
-
-    secondaryCountries.forEach((country) => {
-      country.areaCodes.forEach((areaCode) => {
-        if (rawNumber.startsWith(areaCode)) {
-          matchedCountry = country.isoCode;
-        }
-      });
-    });
-    return matchedCountry;
-  }
-
   private fetchAllCountries() {
     this.countries = this.ionIntlTelInputService.getListOfCountries();
   }
@@ -770,7 +683,7 @@ export class IonIntlTelInputComponent
   }
 
   private removeDialCode(phoneNumber: string): string {
-    if (this.separateDialCode && phoneNumber) {
+    if (this.separateDialCode() && phoneNumber) {
       phoneNumber = phoneNumber.substr(phoneNumber.indexOf(' ') + 1);
     }
     return phoneNumber;
@@ -782,7 +695,7 @@ export class IonIntlTelInputComponent
   }
 
   private setPreferredCountries(): void {
-    for (const preferedCountryIsoCode of this.preferredCountries) {
+    for (const preferedCountryIsoCode of this.preferredCountries()) {
       const country = this.getCountryByIsoCode(preferedCountryIsoCode);
       country.priority = country ? 1 : country.priority;
     }
@@ -791,23 +704,19 @@ export class IonIntlTelInputComponent
     );
   }
 
-  private startsWith = (input: string, search: string): boolean => {
-    return input.substr(0, search.length) === search;
-  }
-
-  private getClasses = (element: HTMLElement) => {
+  private readonly getClasses = (element: HTMLElement) => {
     const classList = element.classList;
     const classes = [];
     for (let i = 0; i < classList.length; i++) {
       const item = classList.item(i);
-      if (item !== null && this.startsWith(item, 'ng-')) {
-        classes.push(`ion-${item.substr(3)}`);
+      if (item !== null && item.startsWith('ng-')) {
+        classes.push(`ion-${item.substring(3)}`);
       }
     }
     return classes;
   }
 
-  private setClasses = (element: HTMLElement, classes: string[]) => {
+  private readonly setClasses = (element: HTMLElement, classes: string[]) => {
     const classList = element.classList;
     [
       'ion-valid',
@@ -821,26 +730,26 @@ export class IonIntlTelInputComponent
     classes.forEach((c) => classList.add(c));
   }
 
-  private setIonicClasses = (element: ElementRef) => {
+  private readonly setIonicClasses = (element: ElementRef) => {
     raf(() => {
-      const input = element.nativeElement as HTMLElement;
-      const classes = this.getClasses(input);
-      this.setClasses(input, classes);
+      const htmlElement = element.nativeElement as HTMLElement;
+      const classes = this.getClasses(htmlElement);
+      this.setClasses(htmlElement, classes);
 
-      const item = input.closest('ion-item');
+      const item = htmlElement.closest('ion-item');
       if (item) {
         this.setClasses(item, classes);
       }
     });
   }
 
-  private setItemClass = (
+  private readonly setItemClass = (
       element: ElementRef,
       className: string,
       addClass: boolean
   ) => {
-    const input = element.nativeElement as HTMLElement;
-    const item = input.closest('ion-item');
+    const htmlElement = element.nativeElement as HTMLElement;
+    const item = htmlElement.closest('ion-item');
     if (item) {
       const classList = item.classList;
       if (addClass) {
