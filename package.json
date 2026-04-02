@@ -47,7 +47,7 @@
     "publish": "npm run package && cd dist/ion-intl-tel-input && npm publish"
   },
   "dependencies": {
-    "@angular/cdk": "^18.2.14",
+    "@angular/cdk": "^19.2.19",
     "@angular/common": "~19.2.20",
     "@angular/core": "~19.2.20",
     "@angular/forms": "~19.2.20",
