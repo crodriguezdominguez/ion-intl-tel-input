@@ -92,7 +92,7 @@ export class IonIntlTelInputComponent
    * @memberof IonIntlTelInputComponent
    */
   @Input()
-  autocomplete = 'off';
+  autocomplete: 'off'|'tel' = 'off';
 
   /**
    * required, passed onto ion-input so we can be accessiblity compliant
@@ -172,7 +172,7 @@ export class IonIntlTelInputComponent
   inputLabelColor = undefined;
 
   @Input()
-  inputLabelPlacement = 'start';
+  inputLabelPlacement: 'start' | 'end' | 'floating' | 'stacked' | 'fixed' = 'start';
 
   /**
    * Instead of an example phone number, use a x pattern. Such as xxx-xxx-xxxx, this will be obtained
