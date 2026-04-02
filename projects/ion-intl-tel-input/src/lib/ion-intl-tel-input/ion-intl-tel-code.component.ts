@@ -1,4 +1,4 @@
-import {Component, OnInit, input, computed, inject, signal, viewChild} from '@angular/core';
+import {Component, OnInit, input, computed, inject, signal, viewChild, ChangeDetectionStrategy} from '@angular/core';
 import { CountryI } from '../models/country.model';
 import {
   IonButton,
@@ -19,6 +19,7 @@ import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} fr
   // tslint:disable-next-line:component-selector
   selector: 'ion-intl-tel-code',
   templateUrl: './ion-intl-tel-code.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
     IonToolbar,

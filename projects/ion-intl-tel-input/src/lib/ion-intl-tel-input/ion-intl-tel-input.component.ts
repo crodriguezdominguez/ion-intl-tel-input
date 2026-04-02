@@ -2,13 +2,12 @@ import {
   Component,
   OnInit,
   forwardRef,
-  Output,
-  EventEmitter,
   OnChanges,
   SimpleChanges,
   ElementRef,
   HostBinding,
-  input, inject, viewChild
+  input, inject, viewChild,
+  output, ChangeDetectionStrategy
 } from '@angular/core';
 
 import { addIcons } from 'ionicons';
@@ -41,6 +40,7 @@ import {CountryPlaceholder} from '../pipes/country-placeholder';
   selector: 'ion-intl-tel-input',
   templateUrl: './ion-intl-tel-input.component.html',
   styleUrls: ['./ion-intl-tel-input.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   providers: [
     {
@@ -304,8 +304,7 @@ export class IonIntlTelInputComponent implements ControlValueAccessor, OnInit, O
    *
    * @memberof IonIntlTelInputComponent
    */
-  @Output()
-  readonly numberChange = new EventEmitter<Event>();
+  readonly numberChange = output<Event>();
 
   /**
    * Fires when the Phone number Input is blurred.
@@ -313,8 +312,7 @@ export class IonIntlTelInputComponent implements ControlValueAccessor, OnInit, O
    *
    * @memberof IonIntlTelInputComponent
    */
-  @Output()
-  readonly numberBlur = new EventEmitter<void>();
+  readonly numberBlur = output<void>();
 
   /**
    * Fires when the Phone number Input is focused.
@@ -322,8 +320,7 @@ export class IonIntlTelInputComponent implements ControlValueAccessor, OnInit, O
    *
    * @memberof IonIntlTelInputComponent
    */
-  @Output()
-  readonly numberFocus = new EventEmitter<void>();
+  readonly numberFocus = output<void>();
 
   /**
    * Fires when the user is typing in Phone number Input.
@@ -331,8 +328,7 @@ export class IonIntlTelInputComponent implements ControlValueAccessor, OnInit, O
    *
    * @memberof IonIntlTelInputComponent
    */
-  @Output()
-  readonly numberInput = new EventEmitter<KeyboardEvent>();
+  readonly numberInput = output<KeyboardEvent>();
 
   /**
    * Fires when the dial code selection is changed.
@@ -340,8 +336,7 @@ export class IonIntlTelInputComponent implements ControlValueAccessor, OnInit, O
    *
    * @memberof IonIntlTelInputComponent
    */
-  @Output()
-  readonly codeChange = new EventEmitter<any>();
+  readonly codeChange = output<CountryI>();
 
   /**
    * Fires when the dial code selection modal is opened.
@@ -349,8 +344,7 @@ export class IonIntlTelInputComponent implements ControlValueAccessor, OnInit, O
    *
    * @memberof IonIntlTelInputComponent
    */
-  @Output()
-  readonly codeOpen = new EventEmitter<any>();
+  readonly codeOpen = output<any>();
 
   /**
    * Fires when the dial code selection modal is closed.
@@ -358,8 +352,7 @@ export class IonIntlTelInputComponent implements ControlValueAccessor, OnInit, O
    *
    * @memberof IonIntlTelInputComponent
    */
-  @Output()
-  readonly codeClose = new EventEmitter<any>();
+  readonly codeClose = output<any>();
 
   /**
    * Fires when a dial code is selected in dial code selection modal.
@@ -367,8 +360,7 @@ export class IonIntlTelInputComponent implements ControlValueAccessor, OnInit, O
    *
    * @memberof IonIntlTelInputComponent
    */
-  @Output()
-  readonly codeSelect = new EventEmitter<any>();
+  readonly codeSelect = output<string>();
 
   private readonly numberInputEl = viewChild<IonInput>('numberInput');
 
@@ -549,7 +541,8 @@ export class IonIntlTelInputComponent implements ControlValueAccessor, OnInit, O
       }
       this.emitValueChange(internationallNo);
 
-      this.codeChange.emit();
+      // TODO: The 'emit' function requires a mandatory any argument
+      this.codeChange.emit(undefined);
     }
     setTimeout(() => {
       this.numberInputEl().setFocus().then();
@@ -566,12 +559,14 @@ export class IonIntlTelInputComponent implements ControlValueAccessor, OnInit, O
     this.setIonicClasses(this.el);
     this.hasFocus = false;
     this.setItemClass(this.el, 'item-has-focus', false);
+    // TODO: The 'emit' function requires a mandatory void argument
     this.numberBlur.emit();
   }
 
   onIonNumberFocus() {
     this.hasFocus = true;
     this.setItemClass(this.el, 'item-has-focus', true);
+    // TODO: The 'emit' function requires a mandatory void argument
     this.numberFocus.emit();
   }
 
