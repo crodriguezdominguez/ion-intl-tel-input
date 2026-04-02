@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.1.0",
   "name": "@crodriguezdominguez/ion-intl-tel-input",
   "title": "Ion Intl Tel Input",
   "private": false,
@@ -9,16 +9,16 @@
     "url": "https://github.com/azzamasghar1"
   },
   "license": "See license in LICENSE",
-  "homepage": "https://github.com/azzamasghar1/ion-intl-tel-input",
+  "homepage": "https://github.com/crodriguezdominguez/ion-intl-tel-input",
   "repository": {
     "type": "git",
-    "url": "https://github.com/azzamasghar1/ion-intl-tel-input"
+    "url": "https://github.com/crodriguezdominguez/ion-intl-tel-input"
   },
   "bugs": {
-    "url": "https://github.com/azzamasghar1/ion-intl-tel-input/issues"
+    "url": "https://github.com/crodriguezdominguez/ion-intl-tel-input/issues"
   },
   "keywords": [
-    "ionic 7",
+    "ionic 8",
     "ion-intl-tel-input",
     "intl tel input",
     "intl",

@@ -1,5 +1,5 @@
 {
-  "version": "2.5.0",
+  "version": "3.1.0",
   "name": "ion-intl-tel-input",
   "title": "Ion Intl Tel Input",
   "description": "An Ionic component for International Phone Number Input, that allows all countries, validation with libphonenumber-js, limited countries, preferred countries, virtual scrolling and much more.",
@@ -8,13 +8,13 @@
     "url": "https://github.com/azzamasghar1"
   },
   "license": "See license in LICENSE",
-  "homepage": "https://github.com/azzamasghar1/ion-intl-tel-input",
+  "homepage": "https://github.com/crodriguezdominguez/ion-intl-tel-input",
   "repository": {
     "type": "git",
-    "url": "https://github.com/azzamasghar1/ion-intl-tel-input"
+    "url": "https://github.com/crodriguezdominguez/ion-intl-tel-input.git"
   },
   "bugs": {
-    "url": "https://github.com/azzamasghar1/ion-intl-tel-input/issues"
+    "url": "https://github.com/crodriguezdominguez/ion-intl-tel-input/issues"
   },
   "keywords": [
     "ionic",
