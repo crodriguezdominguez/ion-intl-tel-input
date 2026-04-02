@@ -19,7 +19,7 @@
 
 <ion-content>
   <cdk-virtual-scroll-viewport style="width: 100%; height: 100%;" itemSize="56" minBufferPx="900" maxBufferPx="1350">
-    <ion-list>
+    <ion-list lines="none">
       <ion-radio-group [value]="country.isoCode">
         <ion-item style="white-space:normal" *cdkVirtualFor="let c of countries">
           <ion-radio labelPlacement="end" [value]="c.isoCode" slot="start" color="primary" (click)="itemTapped(c)">
