@@ -11,7 +11,7 @@ import {
   IonTitle,
   IonToolbar,
   ModalController
-} from '@ionic/angular/standalone';
+} from '@ionic/angular';
 import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 
 

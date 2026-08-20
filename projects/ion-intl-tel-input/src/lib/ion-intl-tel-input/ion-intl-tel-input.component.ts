@@ -28,7 +28,7 @@ import { CountryI } from '../models/country.model';
 import { IonIntlTelInputService } from '../ion-intl-tel-input.service';
 import { raf } from '../util/util';
 import { IonIntTelCodeComponent } from './ion-intl-tel-code.component';
-import {IonButton, IonIcon, IonInput, IonText, ModalController, Platform} from '@ionic/angular/standalone';
+import {IonButton, IonIcon, IonInput, IonText, ModalController, Platform} from '@ionic/angular';
 
 import {CountryPlaceholder} from '../pipes/country-placeholder';
 
